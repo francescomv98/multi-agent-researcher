@@ -1,31 +1,37 @@
-# Virtual environment
-.venv/
-venv/
-
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
+*.pyd
 
-# Environment
+# Virtual environment
+venv/
+.venv/
+env/
+*-env/
+
+# Environment variables
 .env
+.env.*
 
-# VS Code
+# IDE
 .vscode/
+.idea/
 
-# Output
-output/
+# Logs
+logs/
+*.log
 
-# pytest
+# Generated reports
+output/reports/*
+!output/reports/.gitkeep
+
+# Python cache / test
 .pytest_cache/
-
-# Coverage
 .coverage
 htmlcov/
 
-# Log
-logs/
-
-# OS
-.DS_Store
-Thumbs.db
+# Build
+build/
+dist/
+*.egg-info/
