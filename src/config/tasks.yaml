@@ -1,0 +1,59 @@
+planning_task:
+  description: >
+    Analyze the user's research request:
+    "{topic}"
+
+    Create a clear and structured research plan.
+
+    Break the topic into logical sections that should be investigated.
+
+  expected_output: >
+    A structured research plan listing the key topics that should be explored.
+
+
+research_task:
+  description: >
+    Follow the research plan created previously.
+
+    Use available tools to gather additional information when needed.
+
+    Collect detailed information for every section.
+
+    Focus on accuracy and completeness.
+
+  expected_output: >
+    Detailed research notes organized by topic.
+
+
+summary_task:
+  description: >
+    Transform the research notes into a professional Markdown report.
+
+    Include:
+    - Title
+    - Executive Summary
+    - Main Sections
+    - Conclusion
+
+  expected_output: >
+    A well-formatted Markdown report.
+
+
+review_task:
+  description: >
+    Review the Markdown report.
+
+    Check:
+    - factual consistency
+    - duplicated information
+    - missing sections
+    - unclear statements
+    - unsupported claims
+    - formatting quality
+
+    Produce the final improved version.
+
+  expected_output: >
+    A polished Markdown report ready for delivery.
+
+  output_file: output/reports/final_report.md
