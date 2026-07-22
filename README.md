@@ -1,6 +1,8 @@
 # Multi-Agent Researcher
 
-A multi-agent research system built with CrewAI that automatically plans, researches, summarizes and reviews complex topics using specialized AI agents. The project demonstrates an agentic AI workflow where multiple autonomous agents collaborate to transform a user research request into a structured professional report.
+A multi-agent research system built with CrewAI that automatically plans, researches, summarizes and reviews complex topics using specialized AI agents. 
+
+The project demonstrates an agentic AI workflow where multiple autonomous agents collaborate to transform a user research request into a structured professional report.
 
 ---
 
