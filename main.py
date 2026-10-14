@@ -2,8 +2,6 @@ from crew import ResearchCrew
 from src.utils.report_writer import ReportWriter
 from src.utils.logger import setup_logger
 
-logger = setup_logger()
-
 def main():
 
     logger = setup_logger()
