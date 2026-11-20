@@ -1,5 +1,5 @@
 from crewai import LLM
-from config.settings import settings
+from src.config.settings import settings
 
 def get_llm() -> LLM:
     return LLM(

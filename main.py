@@ -1,4 +1,4 @@
-from crew import ResearchCrew
+from src.crew import ResearchCrew
 from src.utils.report_writer import ReportWriter
 from src.utils.logger import setup_logger
 

@@ -2,9 +2,9 @@ from typing import List
 from crewai import Agent, Crew, Process, Task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from crewai.project import CrewBase, agent, crew, task
-from tools.search_tool import search_tool
-from config.llm import get_llm
-from config.settings import settings
+from src.tools.search_tool import search_tool
+from src.config.llm import get_llm
+from src.config.settings import settings
 
 @CrewBase
 class ResearchCrew:
