@@ -1,259 +1,159 @@
 # Multi-Agent Researcher
 
-A multi-agent research system built with CrewAI that automatically plans, researches, summarizes and reviews complex topics using specialized AI agents. 
+A research assistant built with [CrewAI](https://www.crewai.com/). You give it a topic, and four AI agents plan the research, search the web, write a report and review it. You get back a clean Markdown report.
 
-The project demonstrates an agentic AI workflow where multiple autonomous agents collaborate to transform a user research request into a structured professional report.
+<p align="center">
+  <img src="docs/screenshot.png" alt="Multi-Agent Researcher web UI" width="800">
+</p>
 
----
+## Features
 
-## Overview
+- **Four specialized agents** working in sequence: planner, researcher, writer and reviewer
+- **Live web search** through the Serper API
+- **Web UI** (Streamlit) to start a research, follow each step, read the report and download it
+- **CLI** for quick runs from the terminal
+- **Report history**: every run is saved to its own file, so nothing gets overwritten
+- **Configurable** model, temperature and verbosity through a `.env` file
+- Logging to file and console, plus a pytest suite
 
-Traditional research workflows require manually collecting information, organizing sources and writing summaries.
-This project implements a multi-agent architecture where each agent has a specific responsibility in the research pipeline.
-The system is composed of four specialized agents:
+## How it works
 
-### Planner Agent
-
-Responsible for understanding the user's research request and creating a structured investigation plan.
-Responsibilities:
-- Analyze the research topic.
-- Break down the request into logical sections.
-- Define the areas that need investigation.
-
----
-
-### Researcher Agent
-
-Responsible for collecting information following the research plan.
-Responsibilities:
-- Gather relevant information using external search capabilities.
-- Organize findings by topic.
-- Provide structured research notes.
-
----
-
-### Summarizer Agent
-
-Responsible for transforming research findings into a professional report.
-Responsibilities:
-- Create a structured Markdown document.
-- Generate:
-  - Title
-  - Executive Summary
-  - Main Sections
-  - Conclusion
-
----
-
-### Reviewer Agent
-
-Responsible for reviewing and improving the final document.
-Responsibilities:
-- Check clarity.
-- Improve consistency.
-- Ensure readability and completeness.
-
----
-
-## Architecture
-
-The workflow follows a sequential multi-agent pipeline.
-
-The execution flow is:
+The agents run one after the other, and each one gets the previous agent's output as context:
 
 ```text
-User Research Topic
-        |
-        v
-Planner Agent
-        |
-        v
-Researcher Agent
-        |
-        v
-Summarizer Agent
-        |
-        v
-Reviewer Agent
-        |
-        v
-Final Markdown Report
+Topic ──▶ Planner ──▶ Researcher ──▶ Summarizer ──▶ Reviewer ──▶ Markdown report
+                          │
+                          └── Serper web search
 ```
 
-Each agent receives the output of the previous agent as context, creating a collaborative workflow where each component has a specific responsibility. The process is managed by CrewAI using a sequential execution strategy:
+| Agent | What it does |
+|-------|--------------|
+| **Planner** | Reads the request and splits it into the sections that need to be investigated |
+| **Researcher** | Goes through the plan, searches the web when needed and collects notes for each section |
+| **Summarizer** | Turns the notes into a report with title, executive summary, main sections and conclusion |
+| **Reviewer** | Checks consistency, duplicates, missing parts and unsupported claims, then writes the final version |
 
-1. The Planner creates the research strategy.
-2. The Researcher collects information using external tools.
-3. The Summarizer transforms findings into a structured report.
-4. The Reviewer improves the final document before delivery.
+Agents and tasks are defined in YAML (`src/config/agents.yaml`, `src/config/tasks.yaml`), so you can change their roles and instructions without touching the Python code.
 
----
+## Getting started
 
-## Project Structure
+### Requirements
 
-The project is organized as follows:
+- Python 3.11 or newer (tested on 3.13)
+- An [OpenAI](https://platform.openai.com/) API key
+- A [Serper](https://serper.dev/) API key for web search
 
-```text
- multi-agent-researcher/
-    ├── main.py
-    ├── app.py
-    ├── requirements.txt
-    ├── README.md
-    ├── .env
-    │
-    ├── src/
-    │   ├── crew.py
-    │   ├── research.py
-    │   │
-    │   ├── config/
-    │   │   ├── agents.yaml
-    │   │   ├── tasks.yaml
-    │   │   ├── llm.py
-    │   │   └── settings.py
-    │   │
-    │   ├── models/
-    │   │   └── report.py
-    │   │
-    │   ├── tools/
-    │   │   └── search_tool.py
-    │   │
-    │   └── utils/
-    │       ├── logger.py
-    │       ├── validator.py
-    │       └── report_writer.py
-    │
-    ├── tests/
-    │   ├── test_report.py
-    │   ├── test_report_writer.py
-    │   └── test_validator.py
-    │
-    └── output/
-        └── reports/
-            └── <date>_<topic>.md
-```
+### Installation
 
-## Technologies
-
-The project is built using:
-
-- Python 3.11
-- CrewAI
-- OpenAI API
-- Pydantic
-- Pytest
-- Streamlit
-- Serper Search API
-- YAML configuration files
-
-
-## Installation
-
-Clone the repository:
 ```bash
-    git clone https://github.com/francescomv98/multi-agent-researcher.git
-    cd multi-agent-researcher
+git clone https://github.com/francescomv98/multi-agent-researcher.git
+cd multi-agent-researcher
+
+python -m venv venv
+venv\Scripts\activate        # Windows
+# source venv/bin/activate   # macOS / Linux
+
+pip install -r requirements.txt
 ```
 
-Create a virtual environment: 
-```bash
-    python -m venv venv
-```
-
-Activate the virtual environment.
-
-Windows:
-```bash
-    venv\Scripts\activate
-```
-
-Install dependencies:
-```bash
-    pip install -r requirements.txt
-```
-
-
-## Configuration
+### Configuration
 
 Create a `.env` file in the project root:
-```bash
-    MODEL_NAME=gpt-4.1-mini
-    TEMPERATURE=0.2
-    OPENAI_API_KEY=your_openai_api_key
-    SERPER_API_KEY=your_serper_api_key
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+SERPER_API_KEY=your_serper_api_key
+
+# Optional
+MODEL_NAME=gpt-4.1-mini
+TEMPERATURE=0.2
+VERBOSE=true
 ```
 
-The application loads configuration values using `pydantic-settings`.
-The `.env` file is excluded from version control.
+| Variable | Required | Default | Description |
+|----------|----------|---------|-------------|
+| `OPENAI_API_KEY` | yes | – | Key used by the agents' LLM |
+| `SERPER_API_KEY` | yes | – | Key used by the web search tool |
+| `MODEL_NAME` | no | `gpt-4.1-mini` | Model used by all agents |
+| `TEMPERATURE` | no | `0.2` | Sampling temperature |
+| `VERBOSE` | no | `true` | Show agents' reasoning in the console |
 
+The `.env` file is loaded with `pydantic-settings` and is ignored by git.
 
-## Running the Application
-
-Start the application:
-```bash
-    python main.py
-```
-
-Insert a research topic:
-    Research topic: Renewable energy in Italy
-
-The system will execute the complete multi-agent workflow.
-
-Each run saves its report in `output/reports/`, named after the date and the topic
-(e.g. `20261120_101500_renewable-energy-in-italy.md`), so older reports are never overwritten.
+## Usage
 
 ### Web UI
 
-There's also a small web interface built with Streamlit:
 ```bash
-    streamlit run app.py
+streamlit run app.py
 ```
 
-From the browser you can start a new research, follow the progress of each agent,
-read the report, download it and open the reports generated earlier.
+Streamlit opens the app at `http://localhost:8501`. Type a topic, press **Start research** and follow the agents' progress. When the report is ready you can read it on the page or download it as `.md`. Older reports are listed in the sidebar.
 
+### Command line
+
+```bash
+python main.py
+```
+
+```text
+Research topic: Renewable energy in Italy
+```
+
+### Output
+
+Each run writes its report to `output/reports/`, named after the date and topic:
+
+```text
+output/reports/20261120_101500_renewable-energy-in-italy.md
+```
+
+Logs are written to `logs/app.log`. Both folders are ignored by git.
+
+> A full run makes several LLM calls and web searches, so it usually takes a few minutes and uses some API credit.
+
+## Project structure
+
+```text
+multi-agent-researcher/
+├── app.py                    # Streamlit web UI
+├── main.py                   # CLI entry point
+├── requirements.txt
+├── src/
+│   ├── crew.py               # Agents, tasks and crew definition
+│   ├── research.py           # Runs the crew and saves the report
+│   ├── config/
+│   │   ├── agents.yaml       # Agent roles, goals and backstories
+│   │   ├── tasks.yaml        # Task descriptions and expected outputs
+│   │   ├── llm.py            # LLM setup
+│   │   └── settings.py       # Settings loaded from .env
+│   ├── models/
+│   │   └── report.py         # Pydantic models for the report structure
+│   ├── tools/
+│   │   └── search_tool.py    # Serper web search tool
+│   └── utils/
+│       ├── logger.py
+│       ├── report_writer.py  # Report file naming and saving
+│       └── validator.py
+├── tests/
+└── output/reports/           # Generated reports
+```
 
 ## Testing
 
-The project includes automated tests covering:
-- Report data models.
-- Report validation logic.
+```bash
+pytest
+```
 
-Run tests with:
-    pytest
+The tests cover the report models, the validator and the report writer (file naming and saving). They don't call any external API.
 
-Example result:
-    6 passed
+## Roadmap
 
+- Wire the Pydantic report models into the crew (`output_pydantic`) so the final report is validated before it's saved
+- List the sources used by the researcher at the end of the report
+- Let the user pick the model and the depth of the research from the UI
+- Docker image for easier deployment
 
-## Error Handling and Logging
+## Why I built it
 
-The application includes:
-- Crew execution error handling.
-- Structured logging.
-- Runtime execution tracking.
-
-Logs are generated locally inside:
-    logs/
-
-The logs directory is excluded from version control.
-
-
-## Report Validation
-
-Generated reports are validated using Pydantic models before being written to disk.
-
-The validation layer ensures that the final output respects the expected structure:
-- Report title.
-- Executive summary.
-- Report sections.
-- Conclusion.
-
-
-## Purpose
-
-This project was developed to explore:
-- Agentic AI architectures.
-- Multi-agent collaboration.
-- LLM orchestration.
-- Automated research workflows.
-- AI-powered document generation.
+I wanted to explore agentic AI architectures in practice: how several agents can work together, how to orchestrate LLM calls, and how far an automated research and writing pipeline can go.
