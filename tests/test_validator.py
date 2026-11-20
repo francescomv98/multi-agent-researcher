@@ -1,4 +1,5 @@
 import pytest
+from pydantic import ValidationError
 from src.utils.validator import validate_report
 
 def test_valid_report():
@@ -20,5 +21,5 @@ def test_invalid_report():
         "title": "AI Research"
     }
 
-    with pytest.raises(Exception):
+    with pytest.raises(ValidationError):
         validate_report(data)

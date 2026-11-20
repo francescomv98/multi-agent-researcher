@@ -96,12 +96,14 @@ The project is organized as follows:
 ```text
  multi-agent-researcher/
     ├── main.py
+    ├── app.py
     ├── requirements.txt
     ├── README.md
     ├── .env
     │
     ├── src/
     │   ├── crew.py
+    │   ├── research.py
     │   │
     │   ├── config/
     │   │   ├── agents.yaml
@@ -122,11 +124,12 @@ The project is organized as follows:
     │
     ├── tests/
     │   ├── test_report.py
+    │   ├── test_report_writer.py
     │   └── test_validator.py
     │
     └── output/
         └── reports/
-            └── final_report.md
+            └── <date>_<topic>.md
 ```
 
 ## Technologies
@@ -138,6 +141,7 @@ The project is built using:
 - OpenAI API
 - Pydantic
 - Pytest
+- Streamlit
 - Serper Search API
 - YAML configuration files
 
@@ -194,8 +198,18 @@ Insert a research topic:
 
 The system will execute the complete multi-agent workflow.
 
-The final report will be generated at:
-    output/reports/final_report.md
+Each run saves its report in `output/reports/`, named after the date and the topic
+(e.g. `20261120_101500_renewable-energy-in-italy.md`), so older reports are never overwritten.
+
+### Web UI
+
+There's also a small web interface built with Streamlit:
+```bash
+    streamlit run app.py
+```
+
+From the browser you can start a new research, follow the progress of each agent,
+read the report, download it and open the reports generated earlier.
 
 
 ## Testing
@@ -208,7 +222,7 @@ Run tests with:
     pytest
 
 Example result:
-    2 passed
+    6 passed
 
 
 ## Error Handling and Logging

@@ -55,5 +55,3 @@ review_task:
 
   expected_output: >
     A polished Markdown report ready for delivery.
-
-  output_file: output/reports/final_report.md

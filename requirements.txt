@@ -6,3 +6,4 @@ pydantic-settings==2.10.1
 python-dotenv==1.2.2
 PyYAML==6.0.3
 pytest==9.1.1
+streamlit==1.67.0

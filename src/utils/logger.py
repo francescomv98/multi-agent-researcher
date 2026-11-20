@@ -18,4 +18,4 @@ def setup_logger():
         ]
     )
 
-    return logging.getLogger(__name__)
+    return logging.getLogger("researcher")
