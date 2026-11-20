@@ -1,5 +1,4 @@
 from datetime import datetime
-
 from src.utils.report_writer import ReportWriter, report_path_for, slugify
 
 

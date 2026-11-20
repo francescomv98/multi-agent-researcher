@@ -1,5 +1,4 @@
 import streamlit as st
-
 from src.research import REPORTS_DIR, run_research
 from src.utils.logger import setup_logger
 
@@ -22,7 +21,7 @@ def show_report(path):
         "Download .md",
         data=content,
         file_name=path.name,
-        mime="text/markdown",
+        mime="text/markdown"
     )
     st.markdown(content)
 
@@ -41,7 +40,7 @@ with st.sidebar:
             key="selected_report",
             format_func=lambda p: p.stem,
             label_visibility="collapsed",
-            on_change=open_selected,
+            on_change=open_selected
         )
     else:
         st.caption("No reports yet.")

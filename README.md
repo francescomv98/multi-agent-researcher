@@ -18,7 +18,7 @@ A research assistant built with [CrewAI](https://www.crewai.com/). You give it a
 
 ## How it works
 
-The agents run one after the other, and each one gets the previous agent's output as context:
+The agents run one after the other and each one gets the previous agent's output as context:
 
 ```text
 Topic ──▶ Planner ──▶ Researcher ──▶ Summarizer ──▶ Reviewer ──▶ Markdown report
@@ -156,4 +156,4 @@ The tests cover the report models, the validator and the report writer (file nam
 
 ## Why I built it
 
-I wanted to explore agentic AI architectures in practice: how several agents can work together, how to orchestrate LLM calls, and how far an automated research and writing pipeline can go.
+I wanted to explore agentic AI architectures in practice: how several agents can work together, how to orchestrate LLM calls and how far an automated research and writing pipeline can go.

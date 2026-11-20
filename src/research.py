@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import Callable, Optional
-
 from src.crew import ResearchCrew
 from src.utils.report_writer import REPORTS_DIR, ReportWriter, report_path_for
 

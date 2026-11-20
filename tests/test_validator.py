@@ -17,9 +17,7 @@ def test_valid_report():
 
 def test_invalid_report():
 
-    data = {
-        "title": "AI Research"
-    }
+    data = { "title": "AI Research" }
 
     with pytest.raises(ValidationError):
         validate_report(data)
